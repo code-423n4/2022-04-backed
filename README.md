@@ -57,7 +57,7 @@ This repo will be made public before the start of the contest. (C4 delete this l
 [ ⭐️ SPONSORS ADD INFO HERE ]
 | Contract Name      | Source Lines of Code | 3rd Party Contracts | External Calls |
 | ----------- | ----------- | ----------- | ----------- |
-| NFTLoanFacilitator      | 254       | OpenZeppelin Ownable, Solmate SafeTransferLib       | user provided loan asset contract, user provided collateral asset contract, borrow ticket contract, lend ticket contract       |
+| NFTLoanFacilitator      | 254       | OpenZeppelin Ownable, Solmate SafeTransferLib       | user provided loan asset (ERC20), user provided collateral asset (ERC721), BorrowTicket, LendTicket       |
 | NFTLoanTicket   | 30        | OpenZeppelin ERC721        | NFTLoansTicketDescriptor (out of audit scope)       |
 | LendTicket   | 15        |        |         |
 | BorrowTicket   | 11        |        |         |
