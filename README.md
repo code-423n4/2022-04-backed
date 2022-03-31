@@ -55,3 +55,12 @@ Under "SPONSORS ADD INFO HERE" heading below, include the following:
 This repo will be made public before the start of the contest. (C4 delete this line when made public)
 
 [ ⭐️ SPONSORS ADD INFO HERE ]
+| Contract Name      | Source Lines of Code | 3rd Party Contracts | External Calls |
+| ----------- | ----------- | ----------- | ----------- |
+| NFTLoanFacilitator      | 254       | OpenZeppelin Ownable, Solmate SafeTransferLib       | user provided loan asset contract, user provided collateral asset contract, borrow ticket contract, lend ticket contract       |
+| NFTLoanTicket   | 30        | OpenZeppelin ERC721        | NFTLoansTicketDescriptor (out of audit scope)       |
+| LendTicket   | 15        |        |         |
+| BorrowTicket   | 11        |        |         |
+| INFTLoanFacilitator   | 93        |        |         |
+| ILendTicket   | 4        |        |         |
+| IERC20Mintable  | 4        |        |         |
