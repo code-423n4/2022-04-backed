@@ -90,9 +90,11 @@ Anyone can lend to a loan by submitting terms that meet or beat the loan terms (
 Throughout the loan duration, anyone can buyout the existing underwriter by meeting the existing terms and beating at least one of them by at least `requiredImprovementRate`, which is initialized at 10%, e.g. 10% longer duration, 10% higher amount, 10% lower interest rate. A buyout requires paying the existing underwriter their principal plus the interest accrued on the loan so far. A buyout transfers the Lend Ticket to the new underwriter. 
 
 _Underwriting a loan with no existing underwriter_
+
 <img width="588" alt="image" src="https://user-images.githubusercontent.com/6678357/161337354-e0ab381b-9fad-4bd1-91be-8287bd4525b8.png">
 
 _Underwriting a loan with an existing underwriter_
+
 <img width="680" alt="image" src="https://user-images.githubusercontent.com/6678357/161337432-cf21a6a8-c750-4fc9-bb88-e7c6f8f58a5d.png">
 
 ##### Step 3: Repay
