@@ -64,3 +64,15 @@ This repo will be made public before the start of the contest. (C4 delete this l
 | INFTLoanFacilitator   | 93        |        |         |
 | ILendTicket   | 4        |        |         |
 | IERC20Mintable  | 4        |        |         |
+
+## How it works
+
+### Summary
+
+Backed protocol enables peer-to-peer loans with NFT collateral. Its main unique features are
+1. No back and forth negotations: Borrowers propose minimum viable terms (loan asset, minimum loan amount, minimum duration, max interest rate) and the loan starts immediately once a lender meets or beats the minimum terms. 
+2. No oracles: borrowers and lenders agree to loan terms and that's all that matters. The only "liquidation" type event is that lenders can seize the NFT collateral if the loan is past due.
+3. Composability: borrowers get Borrow Tickets and lenders get Lend Tickets. Control flows query for the current owner of these ticket, rather than a static borrower/lender address. For example, when a loan is repaid, the funds go to the Lend Ticket holder, whoever that happens to be at the moment of that transaction. 
+4. Perpetual lender buyout: a lender can be boughtout at any time by a new lender who meets the existing terms and beats at least one term by at least 10%, e.g. 10% longer duration, 10% higher loan amount, 10% lower interest. The new lender pays the previous lender their principal + any interest owed. The loan duration restarts on buyout.
+
+### Detail
