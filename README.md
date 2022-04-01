@@ -75,4 +75,47 @@ Backed protocol enables peer-to-peer loans with NFT collateral. Its main unique 
 3. Composability: borrowers get Borrow Tickets and lenders get Lend Tickets. Control flows query for the current owner of these ticket, rather than a static borrower/lender address. For example, when a loan is repaid, the funds go to the Lend Ticket holder, whoever that happens to be at the moment of that transaction. 
 4. Perpetual lender buyout: a lender can be boughtout at any time by a new lender who meets the existing terms and beats at least one term by at least 10%, e.g. 10% longer duration, 10% higher loan amount, 10% lower interest. The new lender pays the previous lender their principal + any interest owed. The loan duration restarts on buyout.
 
+Note this audit is focused on just a portion of the code, exclusing contracts used for generating on chain art for the lend and borrow tickets. Only the contracts listed in the table above are in scope. 
+
 ### Detail
+#### Walkthrough
+##### Step 1: Create Loan
+The first step in the loan process is for a potential borrower to create a loan. In this transaction, (1) the NFT collateral is transferred to the NFT loan facilitator contract (2) the loan terms are set based on values passed by the caller (loan asset, minimum loan amount, maximum interest rate, minimum duration), and (3) a Borrow Ticket NFT is transferred to an address of the callers choosing. The Borrow Ticket is significant in that (1) the holder can close the loan before it is underwritten and get the NFT collateral back, (2) when the loan is underwritten, the loan amount is transferred the Borrow Ticket holder and (3) on repayment, the NFT collateral is sent to the Borrow Ticket holder.
+
+<img width="586" alt="image" src="https://user-images.githubusercontent.com/6678357/161337240-bb86d8f0-9293-4eae-9752-8d51180a8b89.png">
+
+##### Step 2: Lend
+Anyone can lend to a loan by submitting terms that meet or beat the loan terms (beating meaning higher amount, lower interest, or longer duration). On lend, the loan amount of the loan asset is transferred from the caller to the NFT loan facilitator contract. The facilitator contract then immediately passes on the loan amount, minus an origination fee, to the address holding the Borrow Ticket corresponding to this loan (Borrow Ticket token id == loan id). The facilitator contract mints and a Lend Ticket NFT to the lender. The Lend Ticket is significant in that (1) On loan repayment, funds are sent to the holder of the Lend Ticket and (2) the holder of the Lend Ticket NFT can seize the NFT collateral if the loan is past due. 
+
+Throughout the loan duration, anyone can buyout the existing underwriter by meeting the existing terms and beating at least one of them by at least `requiredImprovementRate`, which is initialized at 10%, e.g. 10% longer duration, 10% higher amount, 10% lower interest rate. A buyout requires paying the existing underwriter their principal plus the interest accrued on the loan so far. A buyout transfers the Lend Ticket to the new underwriter. 
+
+_Underwriting a loan with no existing underwriter_
+<img width="588" alt="image" src="https://user-images.githubusercontent.com/6678357/161337354-e0ab381b-9fad-4bd1-91be-8287bd4525b8.png">
+
+_Underwriting a loan with an existing underwriter_
+<img width="680" alt="image" src="https://user-images.githubusercontent.com/6678357/161337432-cf21a6a8-c750-4fc9-bb88-e7c6f8f58a5d.png">
+
+##### Step 3: Repay
+Anyone can repay the loan, transferring principal plus interest accrued interest amount of the loan asset to the Lend Ticket holder and transferring the collateral NFT to the Borrow Ticket holder. The loan is then closed. 
+<img width="711" alt="image" src="https://user-images.githubusercontent.com/6678357/161337490-604dd795-5420-4f92-a480-0fa276174f3e.png">
+
+##### Step 3: Seize Collateral
+If the loan repayment is past due, the Lend Ticket holder can seize the collateral. The collateral NFT will be transferred to an address passed in by the Lend Ticket holder. 
+
+
+<img width="597" alt="image" src="https://user-images.githubusercontent.com/6678357/161337549-605555c0-c17c-4af3-b347-a74ee3366478.png">
+
+
+#### Simple flow diagrams
+A loan that was closed with no lender
+
+<img width="412" alt="Screen Shot 2022-04-01 at 4 27 33 PM" src="https://user-images.githubusercontent.com/6678357/161338069-8c4f6410-7e42-4e92-a5f7-44406357ba81.png">
+
+
+A repaid loan
+
+<img width="616" alt="image" src="https://user-images.githubusercontent.com/6678357/161338082-2a150926-1843-47b8-a8e8-fcf678d5b61b.png">
+
+A loan with seized collateral
+
+<img width="622" alt="image" src="https://user-images.githubusercontent.com/6678357/161338113-a3bbfc85-0f82-4d22-9221-c6073eacfadc.png">
