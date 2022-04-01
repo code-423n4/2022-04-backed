@@ -75,7 +75,7 @@ Backed protocol enables peer-to-peer loans with NFT collateral. Its main unique 
 3. Composability: borrowers get Borrow Tickets and lenders get Lend Tickets. Control flows query for the current owner of these ticket, rather than a static borrower/lender address. For example, when a loan is repaid, the funds go to the Lend Ticket holder, whoever that happens to be at the moment of that transaction. 
 4. Perpetual lender buyout: a lender can be boughtout at any time by a new lender who meets the existing terms and beats at least one term by at least 10%, e.g. 10% longer duration, 10% higher loan amount, 10% lower interest. The new lender pays the previous lender their principal + any interest owed. The loan duration restarts on buyout.
 
-**Note** this audit is focused on just a portion of the code, exclusing contracts used for generating on-chain art for the lend and borrow tickets. Only the contracts listed in the table above are in scope. 
+**Note** this audit is focused on just a portion of the code, excluding contracts used for generating on-chain art for the lend and borrow tickets. Only the contracts listed in the table above are in scope. 
 
 ### Detail
 #### Walkthrough
