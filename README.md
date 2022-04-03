@@ -87,7 +87,7 @@ The first step in the loan process is for a potential borrower to create a loan.
 ##### Step 2: Lend
 Anyone can lend to a loan by submitting terms that meet or beat the loan terms (beating meaning higher amount, lower interest, or longer duration). On lend, the loan amount of the loan asset is transferred from the caller to the NFT loan facilitator contract. The facilitator contract then immediately passes on the loan amount, minus an origination fee, to the address holding the Borrow Ticket corresponding to this loan (Borrow Ticket token id == loan id). The facilitator contract mints and a Lend Ticket NFT to the lender. The Lend Ticket is significant in that (1) On loan repayment, funds are sent to the holder of the Lend Ticket and (2) the holder of the Lend Ticket NFT can seize the NFT collateral if the loan is past due. 
 
-Throughout the loan duration, anyone can buyout the existing underwriter by meeting the existing terms and beating at least one of them by at least `requiredImprovementRate`, which is initialized at 10%, e.g. 10% longer duration, 10% higher amount, 10% lower interest rate. A buyout requires paying the existing underwriter their principal plus the interest accrued on the loan so far. A buyout transfers the Lend Ticket to the new underwriter. 
+Throughout the loan duration, anyone can buyout the existing lender by meeting the existing terms and beating at least one of them by at least `requiredImprovementRate`, which is initialized at 10%, e.g. 10% longer duration, 10% higher amount, 10% lower interest rate. A buyout requires paying the existing lender their principal plus the interest accrued on the loan so far. A buyout transfers the Lend Ticket to the new lender. 
 
 _Lending to a loan with no existing lender_
 
