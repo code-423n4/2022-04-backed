@@ -78,7 +78,7 @@ A loan with seized collateral
 ### Focus Areas 
 The protocol does not custody any ERC20 assets on behalf of users. As far as ERC20s go, the concern is (1) exploits taking advantage of users having approved the contract to move their asset (2) exploits of the facilitator fees held in the contract. 
 
-ERC721s are custodied in the contract. Explots resulting in improper release of an ERC721 are top concern. The check-effect pattern has been followed, but re-entrancy exploits should be explored, along with anything else one can think of :) 
+ERC721s are custodied in the contract. Exploits resulting in improper release of an ERC721 are top concern. The check-effect pattern has been followed, but re-entrancy exploits should be explored, along with anything else one can think of :) 
 
 ## Running the code
 First install dependencies
