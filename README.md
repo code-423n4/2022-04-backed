@@ -57,15 +57,18 @@ This repo will be made public before the start of the contest. (C4 delete this l
 [ ⭐️ SPONSORS ADD INFO HERE ]
 | Contract Name      | Source Lines of Code | 3rd Party Contracts | External Calls |
 | ----------- | ----------- | ----------- | ----------- |
-| NFTLoanFacilitator      | 254       | OpenZeppelin Ownable, Solmate SafeTransferLib       | user provided loan asset (ERC20), user provided collateral asset (ERC721), BorrowTicket, LendTicket       |
-| NFTLoanTicket   | 30        | OpenZeppelin ERC721        | NFTLoansTicketDescriptor (out of audit scope)       |
-| LendTicket   | 15        |        |         |
-| BorrowTicket   | 11        |        |         |
+| NFTLoanFacilitator      | 260       | OpenZeppelin Ownable, Solmate SafeTransferLib       | user provided loan asset (ERC20), user provided collateral asset (ERC721), BorrowTicket, LendTicket       |
+| NFTLoanTicket   | 30        | Solmate ERC721        | NFTLoansTicketDescriptor (out of audit scope)       |
+| LendTicket   | 31        |        |         |
+| BorrowTicket   | 12        |        |         |
 | INFTLoanFacilitator   | 93        |        |         |
 | ILendTicket   | 4        |        |         |
 | IERC20Mintable  | 4        |        |         |
 
-## How it works
+## Scope
+All of the contracts listed above are in scope for this audit. Anything not listed is not in scope. All of the rest of the code is used for generating the on-chain art for the borrow and lend tickets.
+
+## Protocol Overview
 
 ### Summary
 
@@ -74,8 +77,6 @@ Backed protocol enables peer-to-peer loans with NFT collateral. Its main unique 
 2. No oracles: borrowers and lenders agree to loan terms and that's all that matters. The only "liquidation" type event is that lenders can seize the NFT collateral if the loan is past due.
 3. Composability: borrowers get Borrow Tickets and lenders get Lend Tickets. Control flows query for the current owner of these ticket, rather than a static borrower/lender address. For example, when a loan is repaid, the funds go to the Lend Ticket holder, whoever that happens to be at the moment of that transaction. 
 4. Perpetual lender buyout: a lender can be boughtout at any time by a new lender who meets the existing terms and beats at least one term by at least 10%, e.g. 10% longer duration, 10% higher loan amount, 10% lower interest. The new lender pays the previous lender their principal + any interest owed. The loan duration restarts on buyout.
-
-**Note** this audit is focused on just a portion of the code, excluding contracts used for generating on-chain art for the lend and borrow tickets. Only the contracts listed in the table above are in scope. 
 
 ### Detail
 #### Walkthrough
@@ -121,3 +122,36 @@ A repaid loan
 A loan with seized collateral
 
 <img width="622" alt="image" src="https://user-images.githubusercontent.com/6678357/161338113-a3bbfc85-0f82-4d22-9221-c6073eacfadc.png">
+
+### Focus Areas 
+The protocol does not custody any ERC20 assets on behalf of users. As far as ERC20s go, the concern is (1) exploits taking advantage of users having approved the contract to move their asset (2) exploits of the facilitator fees held in the contract. 
+
+ERC721s are custodied in the contract. Explots resulting in improper release of an ERC721 are top concern. The check-effect pattern has been followed, but re-entrancy exploits should be explored, along with anything else one can think of :) 
+
+## Running the code
+First install dependencies
+```
+$ yarn install
+```
+
+The repository has both Hardhat and Forge tests, run them with the following commands 
+```
+$ yarn hardhat test
+$ forge test
+```
+
+To update `.gas-snapshot`, run 
+
+```
+$ forge snapshot
+```
+
+To run a particular test with forge, pass `-m` and the test name.
+```
+$ forge test -m testCreateLoan
+```
+This will run all tests that have `testCreateLoan` in their function name.
+
+Verbosity of tests can be controlled by passing `-v`, up to `-vvvvv`.
+
+For more on Forge/Foundry, see [here](https://book.getfoundry.sh).
