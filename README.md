@@ -7,7 +7,7 @@
 - Starts April 5, 2022 00:00 UTC
 - Ends April 7, 2022 23:59 UTC
 
-| Contract Name      | Source Lines of Code | 3rd Party Contracts | External Calls |
+| Contract Name      | Source Lines of Code | 3rd Party Dependencies | External Calls |
 | ----------- | ----------- | ----------- | ----------- |
 | NFTLoanFacilitator      | 260       | OpenZeppelin Ownable, Solmate SafeTransferLib       | user provided loan asset (ERC20), user provided collateral asset (ERC721), BorrowTicket, LendTicket       |
 | NFTLoanTicket   | 30        | Solmate ERC721        | NFTLoansTicketDescriptor (out of audit scope)       |
@@ -107,3 +107,13 @@ This will run all tests that have `testCreateLoan` in their function name.
 Verbosity of tests can be controlled by passing `-v`, up to `-vvvvv`.
 
 For more on Forge/Foundry, see [here](https://book.getfoundry.sh).
+
+## Testnet deploys
+The contracts are deployed to the Rinkeby testnet.
+| Contract      | Address |
+| ----------- | ----------- |
+| NFTLoanFacilitator      | 0x1A74E1254aC2041f24f2b86087e292A7326DbE89       |
+| LendTicket   | 0xae59B4097dd87cfA1088DeED1B50319426D1420b        |
+| Borrow Ticket   | 0x5Fc77dd4987AffB6f2cE8Acb85a53e4f12EDd4cE        |
+
+
