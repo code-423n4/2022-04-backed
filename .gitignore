@@ -5,3 +5,5 @@ cache
 artifacts
 scripts
 .env
+
+**/.DS_Store
