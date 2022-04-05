@@ -404,11 +404,11 @@ contract NFTLoanFacilitatorTest is DSTest {
 
     function testClosingLoanFromNonBorrower() public {
         (, uint256 loanId) = setUpLoanForTest(borrower);
-        vm.startPrank(borrower);
 
         vm.startPrank(address(2));
         vm.expectRevert("NFTLoanFacilitator: borrow ticket holder only");
         facilitator.closeLoan(loanId, borrower);
+        vm.stopPrank();
     }
 
     function testInterestExceedingUint128BuyoutReverts() public {
@@ -1002,6 +1002,7 @@ contract NFTLoanFacilitatorTest is DSTest {
             loanDuration,
             newLender
         );
+        vm.stopPrank();
     }
 
     function testBuyoutFailsIfLoanDurationNotSufficientlyImproved() public {
@@ -1021,6 +1022,7 @@ contract NFTLoanFacilitatorTest is DSTest {
             newDuration,
             newLender
         );
+        vm.stopPrank();
     }
 
     function testBuyoutFailsIfInterestRateNotSufficientlyImproved() public {
@@ -1040,9 +1042,10 @@ contract NFTLoanFacilitatorTest is DSTest {
             loanDuration,
             newLender
         );
+        vm.stopPrank();
     }
 
-    function testBuyoutFailsIfLoanAmountRegressed(uint16 newRate, uint32 newDuration, uint256 newAmount) public {
+    function testBuyoutFailsIfLoanAmountRegressed(uint16 newRate, uint32 newDuration, uint128 newAmount) public {
         vm.assume(newRate <= interestRate);
         vm.assume(newDuration >= loanDuration);
         vm.assume(newAmount < loanAmount);
@@ -1059,9 +1062,10 @@ contract NFTLoanFacilitatorTest is DSTest {
             newDuration,
             newLender
         );
+        vm.stopPrank();
     }
 
-    function testBuyoutFailsIfInterestRateRegressed(uint16 newRate, uint32 newDuration, uint256 newAmount) public {
+    function testBuyoutFailsIfInterestRateRegressed(uint16 newRate, uint32 newDuration, uint128 newAmount) public {
         vm.assume(newRate > interestRate);
         vm.assume(newDuration >= loanDuration);
         vm.assume(newAmount >= loanAmount);
@@ -1078,9 +1082,10 @@ contract NFTLoanFacilitatorTest is DSTest {
             newDuration,
             newLender
         );
+        vm.stopPrank();
     }
 
-    function testBuyoutFailsIfDurationRegressed(uint16 newRate, uint32 newDuration, uint256 newAmount) public {
+    function testBuyoutFailsIfDurationRegressed(uint16 newRate, uint32 newDuration, uint128 newAmount) public {
         vm.assume(newRate <= interestRate);
         vm.assume(newDuration < loanDuration);
         vm.assume(newAmount >= loanAmount);
@@ -1097,6 +1102,7 @@ contract NFTLoanFacilitatorTest is DSTest {
             newDuration,
             newLender
         );
+        vm.stopPrank();
     }
 
     function testRepayAndCloseSuccessful() public {
@@ -1175,12 +1181,13 @@ contract NFTLoanFacilitatorTest is DSTest {
 
     function testSeizeCollateralFailsIfLoanIsClosed() public {
         (, uint256 loanId) = setUpLoanForTest(borrower);
-        vm.startPrank(borrower);
+        vm.prank(borrower);
         facilitator.closeLoan(loanId, borrower);
 
         vm.startPrank(lender);
         vm.expectRevert("NFTLoanFacilitator: loan closed");
         facilitator.seizeCollateral(loanId, lender);
+        vm.stopPrank();
     }
 
     function testUpdateOriginationFeeRevertsIfNotCalledByManager() public {
